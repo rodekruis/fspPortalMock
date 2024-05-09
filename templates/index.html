@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ portal_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            color: #333333;
+        }
+        .logo {
+            margin-bottom: 20px;
+            max-width: 30%;
+            width: auto;
+            height: auto;
+        }
+        .alert {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 10px auto;
+        }
+        input[type="submit"] {
+            display: block;
+            margin: 10px auto;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='bank-transfer-logo.svg') }}" alt="Logo" class="logo">
+        <h1>{{ portal_name }}</h1>
+        <br>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert">
+                    <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <p>Please upload your payment file in .csv format below</p>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="csv_file" accept=".csv">
+            <input type="submit" value="Do Payment">
+        </form>
+        <br>
+        <h6>After you have done the payment, the result will be downloaded automatically.</h6>
+    </div>
+</body>
+</html>
