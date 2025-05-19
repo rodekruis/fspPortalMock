@@ -13,8 +13,12 @@ app = Flask(__name__)
 app.secret_key = os.environ['SECRET_KEY']
 
 def process_csv(csv_file):
-    # Load CSV file into pandas DataFrame
-    df = pd.read_csv(csv_file)
+    # Load CSV file into pandas DataFrame with automatic delimiter detection
+    try:
+        df = pd.read_csv(csv_file, sep=None, engine='python')  # Automatically detect delimiter
+    except Exception as e:
+        flash(f"Error parsing CSV file: {str(e)}")
+        return None
 
     # Check if 'id' and 'amount' columns exist
     if 'id' not in df.columns or 'amount' not in df.columns:
