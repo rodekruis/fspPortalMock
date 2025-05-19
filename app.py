@@ -34,8 +34,11 @@ def process_csv(csv_file):
     error_rate = round(random.uniform(0.01,0.05),2)
     df['status'] = ['error' if random.random() <= error_rate else 'success' for _ in range(len(df))]
 
-    # Randomly delete between 1 and 3 rows
-    if len(df) > 20:
+    #shuffle order of rows
+    df = df.sample(frac=1).reset_index(drop=True)
+    
+    # Randomly delete between 1 and 3 rows (if more than 20 rows and environment variable is set)
+    if len(df) > 20 and os.getenv('ENABLE_RANDOM_ROW_DELETION', 'false').lower() == 'true':
         rows_to_delete = random.randint(1, 3)
         if rows_to_delete > 0:
             indices = random.sample(range(len(df)), rows_to_delete)
